@@ -1,60 +1,65 @@
-import "@logseq/libs";
-
-import React from "react";
-import * as ReactDOM from "react-dom/client";
-import App from "./App";
-import "./index.css";
-
-import { logseq as PL } from "../package.json";
-
-// @ts-expect-error
-const css = (t, ...args) => String.raw(t, ...args);
-
-const pluginId = PL.id;
+import '@logseq/libs';
+import openai from './openai';
+import { makeLonger, makeShorter, summarize } from './preset';
+import settings, {
+  IPromptOptions,
+  ISettings,
+  PromptOutputType,
+} from './settings';
+import { getBlockContent } from './utils';
 
 function main() {
-  console.info(`#${pluginId}: MAIN`);
-  const root = ReactDOM.createRoot(document.getElementById("app")!);
+  const { customPrompts } = logseq.settings as unknown as ISettings;
+  const prompts = [summarize, makeShorter, makeLonger];
 
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-
-  function createModel() {
-    return {
-      show() {
-        logseq.showMainUI();
-      },
-    };
+  if (customPrompts.enable) {
+    prompts.push(...customPrompts.prompts);
   }
 
-  logseq.provideModel(createModel());
-  logseq.setMainUIInlineStyle({
-    zIndex: 11,
-  });
+  prompts.map(({ name, prompt, output }: IPromptOptions) => {
+    logseq.Editor.registerSlashCommand(
+      name,
+      async ({ uuid }: { uuid: string }) => {
+        const block = await logseq.Editor.getBlock(uuid, {
+          includeChildren: true,
+        });
+        if (!block) {
+          return;
+        }
 
-  const openIconName = "template-plugin-open";
+        const content = await getBlockContent(block);
+        const completion = await openai.createChatCompletion({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'user',
+              content: prompt.replace('{{text}}', content),
+            },
+          ],
+        });
+        const { data } = completion;
+        if (data.choices && data.choices.length) {
+          const [{ message }] = data.choices;
+          if (!message) {
+            return;
+          }
 
-  logseq.provideStyle(css`
-    .${openIconName} {
-      opacity: 0.55;
-      font-size: 20px;
-      margin-top: 4px;
-    }
-
-    .${openIconName}:hover {
-      opacity: 0.9;
-    }
-  `);
-
-  logseq.App.registerUIItem("toolbar", {
-    key: openIconName,
-    template: `
-      <div data-on-click="show" class="${openIconName}">⚙️</div>
-    `,
+          switch (output) {
+            case PromptOutputType.property:
+              logseq.Editor.updateBlock(
+                uuid,
+                block?.content +
+                  `\n ${name.toLowerCase()}:: ${message.content}`,
+              );
+              break;
+            case PromptOutputType.replace:
+              logseq.Editor.updateBlock(uuid, message.content);
+              break;
+          }
+        }
+      },
+    );
   });
 }
 
-logseq.ready(main).catch(console.error);
+logseq.useSettingsSchema(settings).ready(main).catch(console.error);

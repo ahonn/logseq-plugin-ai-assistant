@@ -1,5 +1,5 @@
 {
-  "name": "logseq-plugin-template-react",
+  "name": "logseq-plugin-ai-prompt",
   "version": "0.0.0",
   "main": "dist/index.html",
   "scripts": {
@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "@logseq/libs": "^0.0.14",
+    "axios": "^1.3.4",
+    "openai": "^3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -37,7 +39,7 @@
     "vite-plugin-logseq": "1.1.2"
   },
   "logseq": {
-    "id": "_pengx17-logseq-template-react",
+    "id": "logseq-plugin-ai-prompt",
     "icon": "./logo.svg"
   }
 }
