@@ -1,9 +1,21 @@
-import { PromptOutputType } from "./settings";
+import { PromptOutputType } from './settings';
+
+export const ask = {
+  name: 'Ask AI',
+  prompt: `
+    I have a question:
+    """
+    {{text}}
+    """
+    Please provide a helpful answer.
+  `,
+  output: PromptOutputType.insert,
+};
 
 export const summarize = {
   name: 'Summarize',
   prompt: `
-    Summarize the following text:
+    Please provide a concise summary of the following text:
     """
     {{text}}
     """
@@ -14,82 +26,87 @@ export const summarize = {
 export const makeShorter = {
   name: 'Make Shorter',
   prompt: `
-    Shorten the following text:
+    Please shorten the following text while maintaining its key points:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const makeLonger = {
   name: 'Make Longer',
   prompt: `
-    Expand the following text:
+    Please expand the following text, providing more details and depth:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const changeTone2Friendly = {
   name: 'Change Tone to Friendly',
   prompt: `
-    Change tone to friendly of the following text:
+    Please rewrite the following text with a friendly tone:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const changeTone2Confident = {
   name: 'Change Tone to Confident',
   prompt: `
-    Change tone to confident of the following text:
+    Please rewrite the following text with a confident tone:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const changeTone2Casual = {
   name: 'Change Tone to Casual',
   prompt: `
-    Change tone to casual of the following text:
+    Please rewrite the following text with a casual tone:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const changeTone2Professional = {
   name: 'Change Tone to Professional',
   prompt: `
-    Change tone to Professional of the following text:
+    Please rewrite the following text with a more professional tone:
     """
     {{text}}
     """
   `,
   output: PromptOutputType.replace,
-}
+};
 
 export const explainThis = {
   name: 'Explain This',
   prompt: `
-    Explain This following text or code:
+    Please provide a clear explanation for the following text or code snippet:
     """
     {{text}}
     """
   `,
-  output: PromptOutputType.appendChild,
-}
+  output: PromptOutputType.insert,
+};
 
-export const ask = {
-  name: 'Ask',
-  prompt: `{{text}}`,
-  output: PromptOutputType.appendChild,
-}
+export const generateIdeas = {
+  name: 'Generate Ideas',
+  prompt: `
+    Please creative ideas related to the following topic:
+    """
+    {{text}}
+    """
+  `,
+  output: PromptOutputType.insert,
+};

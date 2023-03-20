@@ -1,5 +1,5 @@
 import '@logseq/libs';
-import openai from './openai';
+import { Configuration, OpenAIApi } from 'openai';
 import * as presetPrompts from './preset';
 import settings, {
   IPromptOptions,
@@ -9,7 +9,7 @@ import settings, {
 import { getBlockContent } from './utils';
 
 function main() {
-  const { customPrompts } = logseq.settings as unknown as ISettings;
+  const { apiKey, model, customPrompts } = logseq.settings as unknown as ISettings;
   const prompts = [...Object.values(presetPrompts)];
 
   if (customPrompts.enable) {
@@ -17,6 +17,12 @@ function main() {
   }
 
   prompts.map(({ name, prompt, output }: IPromptOptions) => {
+    const configuration = new Configuration({
+      apiKey,
+    });
+
+    const openai = new OpenAIApi(configuration);
+
     logseq.Editor.registerSlashCommand(
       name,
       async ({ uuid }: { uuid: string }) => {
@@ -29,7 +35,7 @@ function main() {
 
         const content = await getBlockContent(block);
         const completion = await openai.createChatCompletion({
-          model: 'gpt-3.5-turbo',
+          model,
           messages: [
             {
               role: 'user',
@@ -43,20 +49,20 @@ function main() {
           if (!message) {
             return;
           }
+          const content = message.content.trim();
 
           switch (output) {
             case PromptOutputType.property:
               await logseq.Editor.updateBlock(
                 uuid,
-                block?.content +
-                  `\n ${name.toLowerCase()}:: ${message.content}`,
+                block?.content + `\n ${name.toLowerCase()}:: ${content}`,
               );
               break;
-            case PromptOutputType.appendChild:
-              await logseq.Editor.insertBlock(uuid, message.content);
+            case PromptOutputType.insert:
+              await logseq.Editor.insertBlock(uuid, content);
               break;
             case PromptOutputType.replace:
-              await logseq.Editor.updateBlock(uuid, message.content);
+              await logseq.Editor.updateBlock(uuid, content);
               break;
           }
         }

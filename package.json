@@ -1,5 +1,5 @@
 {
-  "name": "logseq-plugin-ai-prompt",
+  "name": "logseq-plugin-ai-assistant",
   "version": "0.0.0",
   "main": "dist/index.html",
   "scripts": {
@@ -39,7 +39,8 @@
     "vite-plugin-logseq": "1.1.2"
   },
   "logseq": {
-    "id": "logseq-plugin-ai-prompt",
+    "id": "logseq-plugin-ai-assistant",
+    "title": "AI Assistant",
     "icon": "./logo.svg"
   }
 }

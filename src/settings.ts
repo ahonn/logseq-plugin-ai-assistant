@@ -3,7 +3,7 @@ import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 export enum PromptOutputType {
   property = 'property',
   replace = 'replace',
-  appendChild = 'appendChild',
+  insert = 'insert',
 }
 
 export interface IPromptOptions {
@@ -13,6 +13,8 @@ export interface IPromptOptions {
 }
 
 export interface ISettings {
+  apiKey: string;
+  model: string;
   customPrompts: {
     enable: boolean;
     prompts: IPromptOptions[];
@@ -21,10 +23,24 @@ export interface ISettings {
 
 const settings: SettingSchemaDesc[] = [
   {
+    key: 'apiKey',
+    type: 'string',
+    title: 'API Key',
+    description: 'Enter your OpenAI API key.',
+    default: '',
+  },
+  {
+    key: 'model',
+    type: 'string',
+    title: 'Model',
+    description: 'Choose the OpenAI model (e.g., "gpt-3.5-turbo").',
+    default: 'gpt-3.5-turbo',
+  },
+  {
     key: 'customPrompts',
     type: 'object',
     title: 'Custom Prompts',
-    description: 'Custom Prompts',
+    description: 'Enable and manage custom prompts.',
     default: {
       enable: false,
       prompts: [],
