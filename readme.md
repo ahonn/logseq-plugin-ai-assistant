@@ -35,16 +35,16 @@ Before using the plugin, you need to configure it according to your preferences.
 
 The Logseq-plugin-ai-prompt comes with several built-in prompts to enhance your text editing experience
 
-- **Ask AI**: Ask a question, and the AI will provide a helpful answer. The answer will be inserted after the selected text.
-- **Summarize**: Provide a concise summary of the selected text. The summary will be added as a property.
-- **Make Shorter**: Shorten the selected text while maintaining its key points. The shorter text will replace the original.
-- **Make Longer**: Expand the selected text, providing more details and depth. The expanded text will replace the original.
-- **Change Tone to Friendly**: Rewrite the selected text with a friendly tone. The friendly version will replace the original.
-- **Change Tone to Confident**: Rewrite the selected text with a confident tone. The confident version will replace the original.
-- **Change Tone to Casual**: Rewrite the selected text with a casual tone. The casual version will replace the original.
-- **Change Tone to Professional**: Rewrite the selected text with a more professional tone. The professional version will replace the original.
-- **Explain This**: Provide a clear explanation for the selected text or code snippet. The explanation will be inserted after the selected text.
-- **Generate Ideas**: Generate creative ideas related to the selected topic. The ideas will be inserted after the selected text.
+- **Ask AI**: Ask a question, and the AI will provide a helpful answer.
+- **Summarize**: Provide a concise summary of the text.
+- **Make Shorter**: Shorten the text while maintaining its key points.
+- **Make Longer**: Expand the text, providing more details and depth.
+- **Change Tone to Friendly**: Rewrite the text with a friendly tone.
+- **Change Tone to Confident**: Rewrite the text with a confident tone.
+- **Change Tone to Casual**: Rewrite the text with a casual tone.
+- **Change Tone to Professional**: Rewrite the text with a more professional tone.
+- **Explain This**: Provide a clear explanation for the text or code snippet.
+- **Generate Ideas**: Generate creative ideas related to the selected topic.
 
 See all built-in prompts [here](https://github.com/ahonn/logseq-plugin-ai-assistant/blob/master/src/preset.ts)
 
