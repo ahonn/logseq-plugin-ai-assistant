@@ -3,6 +3,7 @@ import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 export enum PromptOutputType {
   property = 'property',
   replace = 'replace',
+  appendChild = 'appendChild',
 }
 
 export interface IPromptOptions {

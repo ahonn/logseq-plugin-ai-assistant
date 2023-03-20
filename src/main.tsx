@@ -1,6 +1,6 @@
 import '@logseq/libs';
 import openai from './openai';
-import { makeLonger, makeShorter, summarize } from './preset';
+import * as presetPrompts from './preset';
 import settings, {
   IPromptOptions,
   ISettings,
@@ -10,7 +10,7 @@ import { getBlockContent } from './utils';
 
 function main() {
   const { customPrompts } = logseq.settings as unknown as ISettings;
-  const prompts = [summarize, makeShorter, makeLonger];
+  const prompts = [...Object.values(presetPrompts)];
 
   if (customPrompts.enable) {
     prompts.push(...customPrompts.prompts);
@@ -46,14 +46,17 @@ function main() {
 
           switch (output) {
             case PromptOutputType.property:
-              logseq.Editor.updateBlock(
+              await logseq.Editor.updateBlock(
                 uuid,
                 block?.content +
                   `\n ${name.toLowerCase()}:: ${message.content}`,
               );
               break;
+            case PromptOutputType.appendChild:
+              await logseq.Editor.insertBlock(uuid, message.content);
+              break;
             case PromptOutputType.replace:
-              logseq.Editor.updateBlock(uuid, message.content);
+              await logseq.Editor.updateBlock(uuid, message.content);
               break;
           }
         }
