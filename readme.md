@@ -16,7 +16,7 @@ enabling you to achieve more efficient and creative workflows within Logseq.
 
 ## Install
 
-### ~~Option 1: directly install via Marketplace (Coming Soon)~~
+### Option 1: directly install via Marketplace
 
 ### Option 2: manually load
 
