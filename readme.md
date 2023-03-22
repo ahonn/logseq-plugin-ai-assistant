@@ -21,7 +21,7 @@ enabling you to achieve more efficient and creative workflows within Logseq.
 ### Option 2: manually load
 
 - turn on Logseq developer mode
-- [download the prebuilt package here](https://github.com/ahonn/logseq-plugin-todo/releases)
+- [download the prebuilt package here](https://github.com/ahonn/logseq-plugin-ai-assistant/releases)
 - unzip the zip file and load from Logseq plugins page
 
 ## Configuration
@@ -33,7 +33,7 @@ Before using the plugin, you need to configure it according to your preferences.
 
 ## Built-in Prompts
 
-The Logseq-plugin-ai-prompt comes with several built-in prompts to enhance your text editing experience
+The plugin comes with several built-in prompts to enhance your text editing experience
 
 - **Ask AI**: Ask a question, and the AI will provide a helpful answer.
 - **Summarize**: Provide a concise summary of the text.
