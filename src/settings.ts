@@ -15,6 +15,7 @@ export interface IPromptOptions {
 export interface ISettings {
   apiKey: string;
   model: string;
+  tag: string;
   customPrompts: {
     enable: boolean;
     prompts: IPromptOptions[];
@@ -35,6 +36,13 @@ const settings: SettingSchemaDesc[] = [
     title: 'Model',
     description: 'Choose the OpenAI model (e.g., "gpt-3.5-turbo").',
     default: 'gpt-3.5-turbo',
+  },
+  {
+    key: 'tag',
+    type: 'string',
+    title: 'Tag',
+    description: 'Add specific tags to AI-generated content',
+    default: '[[🤖]]'
   },
   {
     key: 'customPrompts',

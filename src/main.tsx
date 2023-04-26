@@ -9,7 +9,8 @@ import settings, {
 import { getBlockContent } from './utils';
 
 function main() {
-  const { apiKey, model, customPrompts } = logseq.settings as unknown as ISettings;
+  const { apiKey, model, customPrompts, tag } =
+    logseq.settings as unknown as ISettings;
   const prompts = [...Object.values(presetPrompts)];
 
   if (customPrompts.enable) {
@@ -55,14 +56,19 @@ function main() {
             case PromptOutputType.property:
               await logseq.Editor.updateBlock(
                 uuid,
-                block?.content + `\n ${name.toLowerCase()}:: ${content}`,
+                block?.content +
+                  ` #${tag}\n ${name.toLowerCase()}:: ${content}`,
               );
               break;
             case PromptOutputType.insert:
+              await logseq.Editor.updateBlock(
+                uuid,
+                block?.content + ` #${tag}`,
+              );
               await logseq.Editor.insertBlock(uuid, content);
               break;
             case PromptOutputType.replace:
-              await logseq.Editor.updateBlock(uuid, content);
+              await logseq.Editor.updateBlock(uuid, `${content} #${tag}`);
               break;
           }
         }
