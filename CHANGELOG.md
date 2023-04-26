@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.0.0...v1.1.0) (2023-04-26)
+
+
+### Features
+
+* add LICENSE ([a56b14e](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/a56b14e9595ecd20bcd4cdc51405f4a00e266e9b))
+
 # 1.0.0 (2023-03-22)
 
 
