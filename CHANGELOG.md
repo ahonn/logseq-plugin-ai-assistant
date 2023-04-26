@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.1.0...v1.2.0) (2023-04-26)
+
+
+### Features
+
+* add setting for add specific tags to AI-generated content ([9500e57](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/9500e57156a0642aa9e917ae5e1278684639f575))
+
 # [1.1.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.0.0...v1.1.0) (2023-04-26)
 
 
