@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.2.0...v1.3.0) (2023-05-24)
+
+
+### Features
+
+* add basePath and auto reload setting ([66032dc](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/66032dc5787ca2cb1f44a0aee0162944cf14409c))
+
 # [1.2.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.1.0...v1.2.0) (2023-04-26)
 
 
