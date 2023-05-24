@@ -9,7 +9,7 @@ import settings, {
 import { getBlockContent } from './utils';
 
 function main() {
-  const { apiKey, model, customPrompts, tag } =
+  const { apiKey, basePath, model, customPrompts, tag } =
     logseq.settings as unknown as ISettings;
   const prompts = [...Object.values(presetPrompts)];
 
@@ -20,6 +20,7 @@ function main() {
   prompts.map(({ name, prompt, output }: IPromptOptions) => {
     const configuration = new Configuration({
       apiKey,
+      basePath
     });
 
     const openai = new OpenAIApi(configuration);
@@ -74,6 +75,7 @@ function main() {
         }
       },
     );
+    logseq.onSettingsChanged(() => main())
   });
 }
 
