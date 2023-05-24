@@ -13,6 +13,7 @@ enabling you to achieve more efficient and creative workflows within Logseq.
 - Seamless integration with Logseq
 - Customizable prompt support
 - Easy-to-use built-in prompts 
+- Using a custom Open AI basePath
 
 ## Install
 
