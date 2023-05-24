@@ -14,6 +14,7 @@ export interface IPromptOptions {
 
 export interface ISettings {
   apiKey: string;
+  basePath: string;
   model: string;
   tag: string;
   customPrompts: {
@@ -29,6 +30,13 @@ const settings: SettingSchemaDesc[] = [
     title: 'API Key',
     description: 'Enter your OpenAI API key.',
     default: '',
+  },
+  {
+    key: 'basePath',
+    type: 'string',
+    title: 'openApi basePath',
+    description: 'Enter your openApi proxy basePath',
+    default: 'https://api.openai.com/v1',
   },
   {
     key: 'model',
