@@ -1,30 +1,42 @@
 import '@logseq/libs';
-import { Configuration, OpenAIApi } from 'openai';
-import * as presetPrompts from './preset';
-import settings, {
-  IPromptOptions,
-  ISettings,
-  PromptOutputType,
-} from './settings';
+import { OpenAI } from 'langchain/llms/openai';
+import { PromptTemplate } from 'langchain/prompts';
+import {
+  CustomListOutputParser,
+  StructuredOutputParser,
+} from 'langchain/output_parsers';
+import * as presetPrompts from './prompts';
+import { IPrompt, PromptOutputType } from './prompts/type';
+import settings, { ISettings } from './settings';
 import { getBlockContent } from './utils';
 
-function main() {
-  const { apiKey, basePath, model, customPrompts, tag } =
-    logseq.settings as unknown as ISettings;
+function getPrompts() {
+  const { customPrompts } = logseq.settings as unknown as ISettings;
   const prompts = [...Object.values(presetPrompts)];
-
   if (customPrompts.enable) {
     prompts.push(...customPrompts.prompts);
   }
+  return prompts;
+}
 
-  prompts.map(({ name, prompt, output }: IPromptOptions) => {
-    const configuration = new Configuration({
-      apiKey,
-      basePath
-    });
+function main() {
+  const {
+    apiKey,
+    basePath,
+    model: modelName,
+    tag,
+  } = logseq.settings as unknown as ISettings;
 
-    const openai = new OpenAIApi(configuration);
+  const prompts = getPrompts();
+  const model = new OpenAI(
+    {
+      openAIApiKey: apiKey,
+      modelName,
+    },
+    { basePath },
+  );
 
+  prompts.map(({ name, prompt: t, output, format }: IPrompt) => {
     logseq.Editor.registerSlashCommand(
       name,
       async ({ uuid }: { uuid: string }) => {
@@ -36,46 +48,83 @@ function main() {
         }
 
         const content = await getBlockContent(block);
-        const completion = await openai.createChatCompletion({
-          model,
-          messages: [
-            {
-              role: 'user',
-              content: prompt.replace('{{text}}', content),
-            },
-          ],
-        });
-        const { data } = completion;
-        if (data.choices && data.choices.length) {
-          const [{ message }] = data.choices;
-          if (!message) {
-            return;
-          }
-          const content = message.content.trim();
+        const listed = Array.isArray(format);
+        const structured = typeof format === 'object' && !listed;
 
-          switch (output) {
-            case PromptOutputType.property:
-              await logseq.Editor.updateBlock(
-                uuid,
-                block?.content +
-                  ` #${tag}\n ${name.toLowerCase()}:: ${content}`,
-              );
-              break;
-            case PromptOutputType.insert:
-              await logseq.Editor.updateBlock(
-                uuid,
-                block?.content + ` #${tag}`,
-              );
-              await logseq.Editor.insertBlock(uuid, content);
-              break;
-            case PromptOutputType.replace:
-              await logseq.Editor.updateBlock(uuid, `${content} #${tag}`);
-              break;
+        let parser;
+        if (structured) {
+          parser = StructuredOutputParser.fromNamesAndDescriptions(
+            format as { [key: string]: string },
+          );
+        } else if (listed) {
+          parser = new CustomListOutputParser({ separator: '\n' });
+        }
+
+        const template = t.replace('{{text}}', '{content}');
+        const prompt = parser
+          ? new PromptTemplate({
+              template: template + '\n{format_instructions}',
+              inputVariables: ['content'],
+              partialVariables: {
+                format_instructions: parser.getFormatInstructions(),
+              },
+            })
+          : new PromptTemplate({
+              template,
+              inputVariables: ['content'],
+            });
+
+        const input = await prompt.format({ content });
+        const response = await model.call(input);
+
+        switch (output) {
+          case PromptOutputType.property: {
+            let content = `${block?.content} #${tag}\n`;
+
+            if (!parser) {
+              content += `${name.toLowerCase()}:: ${response}`;
+            } else if (structured) {
+              content += `${name.toLowerCase()}:: `;
+              const record = await parser.parse(response);
+              content += Object.entries(record)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join(' ');
+            } else if (listed) {
+              content += `${name.toLowerCase()}:: `;
+              const list = (await parser.parse(response)) as string[];
+              content += list.join(', ');
+            }
+
+            await logseq.Editor.updateBlock(uuid, content);
+            break;
           }
+          case PromptOutputType.insert: {
+            await logseq.Editor.updateBlock(
+              uuid,
+              `${block?.content} #${tag}\n`,
+            );
+            if (!parser) {
+              await logseq.Editor.insertBlock(uuid, response);
+            } else if (structured) {
+              const record = await parser.parse(response);
+              for await (const [key, value] of Object.entries(record)) {
+                await logseq.Editor.insertBlock(uuid, `${key}: ${value}`);
+              }
+            } else if (listed) {
+              const record = (await parser.parse(response)) as string[];
+              for await (const item of record) {
+                await logseq.Editor.insertBlock(uuid, item);
+              }
+            }
+            break;
+          }
+          case PromptOutputType.replace:
+            await logseq.Editor.updateBlock(uuid, `${response} #${tag}`);
+            break;
         }
       },
     );
-    logseq.onSettingsChanged(() => main())
+    logseq.onSettingsChanged(() => main());
   });
 }
 

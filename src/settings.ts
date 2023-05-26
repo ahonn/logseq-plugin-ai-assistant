@@ -1,16 +1,5 @@
 import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
-
-export enum PromptOutputType {
-  property = 'property',
-  replace = 'replace',
-  insert = 'insert',
-}
-
-export interface IPromptOptions {
-  name: string;
-  prompt: string;
-  output: PromptOutputType;
-}
+import { IPrompt } from './prompts/type';
 
 export interface ISettings {
   apiKey: string;
@@ -19,7 +8,7 @@ export interface ISettings {
   tag: string;
   customPrompts: {
     enable: boolean;
-    prompts: IPromptOptions[];
+    prompts: IPrompt[];
   };
 }
 
