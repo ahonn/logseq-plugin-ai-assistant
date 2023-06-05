@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.3.0...v1.3.1) (2023-06-05)
+
+
+### Bug Fixes
+
+* add tag based on the PromptOutputType, [#2](https://github.com/ahonn/logseq-plugin-ai-assistant/issues/2) ([00252a8](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/00252a899a84f17d6cfa18ddf25d7a967c41f89e))
+
 # [1.3.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.2.0...v1.3.0) (2023-05-24)
 
 
