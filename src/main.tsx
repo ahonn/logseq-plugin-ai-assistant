@@ -24,8 +24,9 @@ function main() {
     apiKey,
     basePath,
     model: modelName,
-    tag,
+    tag: tagName,
   } = logseq.settings as unknown as ISettings;
+  const tag = ` #${tagName}`;
 
   const prompts = getPrompts();
   const model = new OpenAI(
@@ -79,7 +80,7 @@ function main() {
 
         switch (output) {
           case PromptOutputType.property: {
-            let content = `${block?.content} #${tag}\n`;
+            let content = `${block?.content}${tag}\n`;
 
             if (!parser) {
               content += `${name.toLowerCase()}:: ${response}`;
@@ -99,18 +100,22 @@ function main() {
             break;
           }
           case PromptOutputType.insert: {
-            await logseq.Editor.updateBlock(
-              uuid,
-              `${block?.content} #${tag}\n`,
-            );
             if (!parser) {
-              await logseq.Editor.insertBlock(uuid, response);
+              await logseq.Editor.insertBlock(uuid, `${response}${tag}`);
             } else if (structured) {
               const record = await parser.parse(response);
+              await logseq.Editor.updateBlock(
+                uuid,
+                `${block?.content}${tag}\n`,
+              );
               for await (const [key, value] of Object.entries(record)) {
                 await logseq.Editor.insertBlock(uuid, `${key}: ${value}`);
               }
             } else if (listed) {
+              await logseq.Editor.updateBlock(
+                uuid,
+                `${block?.content}${tag}\n`,
+              );
               const record = (await parser.parse(response)) as string[];
               for await (const item of record) {
                 await logseq.Editor.insertBlock(uuid, item);
@@ -119,7 +124,7 @@ function main() {
             break;
           }
           case PromptOutputType.replace:
-            await logseq.Editor.updateBlock(uuid, `${response} #${tag}`);
+            await logseq.Editor.updateBlock(uuid, `${response}${tag}`);
             break;
         }
       },
