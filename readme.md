@@ -2,6 +2,8 @@
 
 A powerful tool that enhances your Logseq experience by allowing you to interact with AI models like OpenAI's `gpt-3.5-turbo`.
 
+<a href="https://www.buymeacoffee.com/yuexunjiang"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=yuexunjiang&button_colour=FFDD00&font_colour=000000&font_family=Comic&outline_colour=000000&coffee_colour=ffffff" /></a>
+
 With this plugin, you can effortlessly generate or transform text using custom prompts,
 enabling you to achieve more efficient and creative workflows within Logseq.
 
@@ -78,10 +80,6 @@ See all built-in prompts [here](https://github.com/ahonn/logseq-plugin-ai-assist
 
 ## Contribution
 Issues and PRs are welcome!
-
-## Buy me a coffee
-
-If my plugin solve your situation and you will, you can choose to [buy me a coffee](https://www.buymeacoffee.com/yuexunjiang).
 
 ## Licence
 MIT
