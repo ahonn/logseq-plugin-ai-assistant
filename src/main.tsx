@@ -29,13 +29,13 @@ function main() {
   const tag = ` #${tagName}`;
 
   const prompts = getPrompts();
-  const model = new OpenAI(
-    {
-      openAIApiKey: apiKey,
-      modelName,
-    },
-    { basePath },
-  );
+  const model = new Perplexity(
+  {
+    perplexityApiKey: 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, // replace with your Perplexity API key
+    modelName,
+  },
+  { basePath: "https://api.perplexity.ai/chat/completions" }, // replace with the Perplexity API endpoint
+);
 
   prompts.map(({ name, prompt: t, output, format }: IPrompt) => {
     logseq.Editor.registerSlashCommand(
