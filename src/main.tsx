@@ -26,7 +26,7 @@ function main() {
     model: modelName,
     tag: tagName,
   } = logseq.settings as unknown as ISettings;
-  const tag = ` #${tagName}`;
+  const tag = tagName ? ` #${tagName}` : '';
 
   const prompts = getPrompts();
   const model = new OpenAI(
