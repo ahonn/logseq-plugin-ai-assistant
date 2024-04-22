@@ -49,7 +49,7 @@ The plugin comes with several built-in prompts to enhance your text editing expe
 - **Explain This**: Provide a clear explanation for the text or code snippet.
 - **Generate Ideas**: Generate creative ideas related to the selected topic.
 
-See all built-in prompts [here](https://github.com/ahonn/logseq-plugin-ai-assistant/blob/master/src/preset.ts)
+See all built-in prompts [here](https://github.com/ahonn/logseq-plugin-ai-assistant/tree/master/src/prompts)
 
 ## How to Use a Custom Prompt
 
