@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.3.1...v1.3.2) (2024-04-22)
+
+
+### Bug Fixes
+
+* fix tag ([084a8bb](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/084a8bbb14a8d16a04d1acb1c9b4a388b9368c25))
+
 ## [1.3.1](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.3.0...v1.3.1) (2023-06-05)
 
 
