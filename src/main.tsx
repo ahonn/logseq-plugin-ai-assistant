@@ -64,19 +64,38 @@ function main() {
         const template = t.replace('{{text}}', '{content}');
         const prompt = parser
           ? new PromptTemplate({
-              template: template + '\n{format_instructions}',
-              inputVariables: ['content'],
-              partialVariables: {
-                format_instructions: parser.getFormatInstructions(),
-              },
-            })
+            template: template + '\n{format_instructions}',
+            inputVariables: ['content'],
+            partialVariables: {
+              format_instructions: parser.getFormatInstructions(),
+            },
+          })
           : new PromptTemplate({
-              template,
-              inputVariables: ['content'],
-            });
+            template,
+            inputVariables: ['content'],
+          });
 
         const input = await prompt.format({ content });
-        const response = await model.call(input);
+        const response = await fetch(`${basePath}/v1/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [{ role: 'user', content: input }],
+            temperature: 0.3,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const result = await response.json();
+
+        console.log("got response:" + result)
 
         switch (output) {
           case PromptOutputType.property: {
@@ -86,13 +105,13 @@ function main() {
               content += `${name.toLowerCase()}:: ${response}`;
             } else if (structured) {
               content += `${name.toLowerCase()}:: `;
-              const record = await parser.parse(response);
+              const record = await parser.parse(result);
               content += Object.entries(record)
                 .map(([key, value]) => `${key}: ${value}`)
                 .join(' ');
             } else if (listed) {
               content += `${name.toLowerCase()}:: `;
-              const list = (await parser.parse(response)) as string[];
+              const list = (await parser.parse(result)) as string[];
               content += list.join(', ');
             }
 
@@ -103,7 +122,7 @@ function main() {
             if (!parser) {
               await logseq.Editor.insertBlock(uuid, `${response}${tag}`);
             } else if (structured) {
-              const record = await parser.parse(response);
+              const record = await parser.parse(result);
               await logseq.Editor.updateBlock(
                 uuid,
                 `${block?.content}${tag}\n`,
@@ -116,7 +135,7 @@ function main() {
                 uuid,
                 `${block?.content}${tag}\n`,
               );
-              const record = (await parser.parse(response)) as string[];
+              const record = (await parser.parse(result)) as string[];
               for await (const item of record) {
                 await logseq.Editor.insertBlock(uuid, item);
               }
