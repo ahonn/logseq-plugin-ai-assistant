@@ -1,5 +1,5 @@
 import '@logseq/libs';
-import { OpenAI } from 'langchain/llms/openai';
+import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from 'langchain/prompts';
 import {
   CustomListOutputParser,
@@ -29,10 +29,11 @@ function main() {
   const tag = tagName ? ` #${tagName}` : '';
 
   const prompts = getPrompts();
-  const model = new OpenAI(
+  const model = new ChatOpenAI(
     {
       openAIApiKey: apiKey,
       modelName,
+      streaming: false,
     },
     { basePath },
   );
@@ -64,19 +65,21 @@ function main() {
         const template = t.replace('{{text}}', '{content}');
         const prompt = parser
           ? new PromptTemplate({
-              template: template + '\n{format_instructions}',
-              inputVariables: ['content'],
-              partialVariables: {
-                format_instructions: parser.getFormatInstructions(),
-              },
-            })
+            template: template + '\n{format_instructions}',
+            inputVariables: ['content'],
+            partialVariables: {
+              format_instructions: parser.getFormatInstructions(),
+            },
+          })
           : new PromptTemplate({
-              template,
-              inputVariables: ['content'],
-            });
+            template,
+            inputVariables: ['content'],
+          });
 
         const input = await prompt.format({ content });
-        const response = await model.call(input);
+        const message = await model.invoke(input);
+        // only accept text response for now
+        const response = message.content.toString()
 
         switch (output) {
           case PromptOutputType.property: {
