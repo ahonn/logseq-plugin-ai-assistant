@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.4.0...v1.5.0) (2024-08-28)
+
+
+### Features
+
+* get and send all the children blocks with getBlockContent ([fa188cd](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/fa188cd79dc01579ed99f8c4b5ce53ae60f37ff1))
+
 # [1.4.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.3.2...v1.4.0) (2024-05-20)
 
 
