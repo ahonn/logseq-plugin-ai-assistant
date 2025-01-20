@@ -9,4 +9,5 @@ export enum PromptOutputType {
   property = 'property',
   replace = 'replace',
   insert = 'insert',
+  append = 'append',
 }

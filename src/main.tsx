@@ -129,6 +129,9 @@ function main() {
           case PromptOutputType.replace:
             await logseq.Editor.updateBlock(uuid, `${response}${tag}`);
             break;
+          case PromptOutputType.append:
+            await logseq.Editor.updateBlock(uuid, `${block?.content} ${response}${tag}`);
+            break;
         }
       },
     );
