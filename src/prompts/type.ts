@@ -1,6 +1,7 @@
 export interface IPrompt {
   name: string;
-  prompt: string;
+  system: string;
+  user: string;
   output: PromptOutputType;
   format?: string | [] | { [key: string]: string };
 }

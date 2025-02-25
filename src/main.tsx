@@ -1,6 +1,6 @@
 import '@logseq/libs';
 import { ChatOpenAI } from '@langchain/openai';
-import { PromptTemplate } from 'langchain/prompts';
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 import {
   CustomListOutputParser,
   StructuredOutputParser,
@@ -38,7 +38,7 @@ function main() {
     { basePath },
   );
 
-  prompts.map(({ name, prompt: t, output, format }: IPrompt) => {
+  prompts.map(({ name, system, user, output, format }: IPrompt) => {
     logseq.Editor.registerSlashCommand(
       name,
       async ({ uuid }: { uuid: string }) => {
@@ -62,21 +62,12 @@ function main() {
           parser = new CustomListOutputParser({ separator: '\n' });
         }
 
-        const template = t.replace('{{text}}', '{content}');
-        const prompt = parser
-          ? new PromptTemplate({
-            template: template + '\n{format_instructions}',
-            inputVariables: ['content'],
-            partialVariables: {
-              format_instructions: parser.getFormatInstructions(),
-            },
-          })
-          : new PromptTemplate({
-            template,
-            inputVariables: ['content'],
-          });
+        const template = ChatPromptTemplate.fromMessages([
+          ["system", system],
+          ["user", user.replace('{{text}}', '{content}')]
+        ]);
 
-        const input = await prompt.format({ content });
+        const input = await template.formatMessages({ content });
         const message = await model.invoke(input);
         // only accept text response for now
         const response = message.content.toString()

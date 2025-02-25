@@ -2,12 +2,11 @@ import { IPrompt, PromptOutputType } from "./type";
 
 export const GenerateIdeas: IPrompt = {
   name: 'Generate Ideas',
-  prompt: `
-    Please creative ideas related to the following topic:
-    """
-    {content}
-    """
-  `,
+  system: 'You are a creative AI assistant that generates innovative and relevant ideas.',
+  user: `Please generate creative ideas related to the following topic:
+"""
+{content}
+"""`,
   output: PromptOutputType.insert,
   format: [],
 };
