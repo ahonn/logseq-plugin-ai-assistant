@@ -1,6 +1,7 @@
 import '@logseq/libs';
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import {
   CustomListOutputParser,
   StructuredOutputParser,
@@ -68,9 +69,9 @@ function main() {
         ]);
 
         const input = await template.formatMessages({ content });
-        const message = await model.invoke(input);
+        const message = await model.call(input);
         // only accept text response for now
-        const response = message.content.toString()
+        const response = message.content.toString();
 
         switch (output) {
           case PromptOutputType.property: {
