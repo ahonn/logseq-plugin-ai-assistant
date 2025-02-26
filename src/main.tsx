@@ -39,7 +39,7 @@ function main() {
     { basePath },
   );
 
-  prompts.map(({ name, system, user, output, format }: IPrompt) => {
+  prompts.map(({ name, system, prompt, output, format }: IPrompt) => {
     logseq.Editor.registerSlashCommand(
       name,
       async ({ uuid }: { uuid: string }) => {
@@ -65,7 +65,7 @@ function main() {
 
         const template = ChatPromptTemplate.fromMessages([
           ["system", system],
-          ["user", user.replace('{{text}}', '{content}')]
+          ["user", prompt.replace('{{text}}', '{content}')]
         ]);
 
         const input = await template.formatMessages({ content });
