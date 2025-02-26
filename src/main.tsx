@@ -63,8 +63,9 @@ function main() {
           parser = new CustomListOutputParser({ separator: '\n' });
         }
 
+        const defaultSystem = "You are a helpful assistant and will support the user with any task.";
         const template = ChatPromptTemplate.fromMessages([
-          ["system", system],
+          ["system", system || defaultSystem],
           ["user", prompt.replace('{{text}}', '{content}')]
         ]);
 
