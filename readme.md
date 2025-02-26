@@ -83,3 +83,28 @@ Issues and PRs are welcome!
 
 ## Licence
 MIT
+
+## How to Specify a Model for Individual Custom Prompts
+
+- Open the plugin settings and locate the "customPrompts" field.
+
+- Add the following JSON object to the "prompts" array, specifying a model for an individual prompt:
+
+```json
+{
+  "apiKey": "<your-api-key>",
+  "model": "gpt-3.5-turbo",
+  "customPrompts": {
+    "enable": true, // <- Make sure to enable this.
+    "prompts": [
+      {
+        "name": "Markdown Table",
+        "prompt": "Please generate a {{text}} Markdown table",
+        "output": "replace", // "property", "replace" or "insert"
+        "model": "gpt-4" // Specify the model for this prompt
+      }
+    ]
+  },
+  "disabled": false
+}
+```

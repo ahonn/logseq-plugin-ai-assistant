@@ -23,22 +23,24 @@ function main() {
   const {
     apiKey,
     basePath,
-    model: modelName,
+    model: globalModelName,
     tag: tagName,
   } = logseq.settings as unknown as ISettings;
   const tag = tagName ? ` #${tagName}` : '';
 
   const prompts = getPrompts();
-  const model = new ChatOpenAI(
-    {
-      openAIApiKey: apiKey,
-      modelName,
-      streaming: false,
-    },
-    { basePath },
-  );
 
-  prompts.map(({ name, prompt: t, output, format }: IPrompt) => {
+  prompts.map(({ name, prompt: t, output, format, model: promptModelName }: IPrompt) => {
+    const modelName = promptModelName || globalModelName;
+    const model = new ChatOpenAI(
+      {
+        openAIApiKey: apiKey,
+        modelName,
+        streaming: false,
+      },
+      { basePath },
+    );
+
     logseq.Editor.registerSlashCommand(
       name,
       async ({ uuid }: { uuid: string }) => {
