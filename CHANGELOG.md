@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.5.0...v1.6.0) (2025-02-27)
+
+
+### Bug Fixes
+
+* add default system prompt when none is provided to allow for backwards compatibility ([b015aa1](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/b015aa112950ecd91967190535810ee97e45f431))
+
+
+### Features
+
+* add model to custom prompts ([3752182](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/375218207dcdf133bce5dfaa4260d4254c7124ba))
+* refactor prompts to use ChatPromptTemplate and separate system/user instructions ([d584eb7](https://github.com/ahonn/logseq-plugin-ai-assistant/commit/d584eb77c5784d7aba3dd9911b22378c68333fb3))
+
 # [1.5.0](https://github.com/ahonn/logseq-plugin-ai-assistant/compare/v1.4.0...v1.5.0) (2024-08-28)
 
 
